@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto';
+}
+
+.header {
+  background-color: #202020;
+  height: 39px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.header img {
+  width: 25px;
+  margin-right: 7px;
+}
+
+.header-title {
+  color: white;
+  font-size: 16px;
+}
+
+.footer {
+  background-color: #202020;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.footer-text {
+  color: white;
+  font-size: 9px;
+}
+
+.left-panel {
+  background-color: #202020;
+  width: 200px;
+  height: calc(100vh - 55px);
+  padding-left: 10px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 0;
+  user-select: none;
+  line-height: 39px;
+  padding-left: 5px;
+}
+
+.menu-item.selected {
+  background-color: #1E90FF;
+  border-radius: 10px 0 0 10px;
+}
+
+.main {
+  width: 100vw;
+  height: calc(100vh - 55px);
+  display: flex;
+  overflow: hidden;
+}
+
+.cytoscape-canvas {
+  width: calc(100% - 210px);
+  height: 100%;
+}
+
+.empty-canvas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  user-select: none;
+}
