@@ -1,0 +1,40 @@
+---
+name: React Build & Test
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release/**'
+  pull_request:
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.10.0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Docker image
+        run: docker build -t dashboard-ui .
+
+      - name: Run tests
+        run: |
+          docker run --rm -d -p 3000:3000 --name dashboard-ui-container dashboard-ui
+          sleep 10 # Wait for the application to start
+          docker exec dashboard-ui-container wget -qO- http://localhost:3000 | \
+              grep -q '<title>NSM Dasboard</title>' && \
+              echo "App is up and running!" || \
+              (echo "App didn't start."; exit 1)
+          docker stop dashboard-ui-container
+
+      - name: Cleanup
+        run: docker rmi dashboard-ui

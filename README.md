@@ -1,75 +1,23 @@
-# Build
+# Network Service Mesh Dashboard UI
 
-## Build cmd binary locally
+NSM dashboard UI part working in conjunction with [the backend part](https://github.com/networkservicemesh/cmd-dashboard-backend)
 
-You can build the locally by executing
+Written in [React](https://react.dev/) using libraries:
+- [Typescript](https://www.typescriptlang.org/)
+- [Redux](https://redux.js.org/)
+- [Cytoscape](https://js.cytoscape.org/)
+- [Chart.js](https://www.chartjs.org/)
 
-```bash
-go build ./...
-```
+The entire NSM dashboard deployment info see [here](https://github.com/networkservicemesh/deployments-k8s/tree/main/examples/observability/dashboard)
 
-## Build Docker container
+## Dev/debug
 
-You can build the docker container by running:
+### To run dashboard UI locally:
 
-```bash
-docker build .
-```
-
-# Testing
-
-## Testing Docker container
-
-Testing is run via a Docker container.  To run testing run:
-
-```bash
-docker run --privileged --rm $(docker build -q --target test .)
-```
-
-# Debugging
-
-## Debugging the tests
-If you wish to debug the test code itself, that can be acheived by running:
-
-```bash
-docker run --privileged --rm -p 40000:40000 $(docker build -q --target debug .)
-```
-
-This will result in the tests running under dlv.  Connecting your debugger to localhost:40000 will allow you to debug.
-
-```bash
--p 40000:40000
-```
-forwards port 40000 in the container to localhost:40000 where you can attach with your debugger.
-
-```bash
---target debug
-```
-
-Runs the debug target, which is just like the test target, but starts tests with dlv listening on port 40000 inside the container.
-
-## Debugging the cmd
-
-When you run 'cmd' you will see an early line of output that tells you:
-
-```Setting env variable DLV_LISTEN_FORWARDER to a valid dlv '--listen' value will cause the dlv debugger to execute this binary and listen as directed.```
-
-If you follow those instructions when running the Docker container:
-```bash
-docker run --privileged -e DLV_LISTEN_FORWARDER=:50000 -p 50000:50000 --rm $(docker build -q --target test .)
-```
-
-```-e DLV_LISTEN_FORWARDER=:50000``` tells docker to set the environment variable DLV_LISTEN_FORWARDER to :50000 telling
-dlv to listen on port 50000.
-
-```-p 50000:50000``` tells docker to forward port 50000 in the container to port 50000 in the host.  From there, you can
-just connect dlv using your favorite IDE and debug cmd.
-
-## Debugging the tests and the cmd
-
-```bash
-docker run --privileged -e DLV_LISTEN_FORWARDER=:50000 -p 40000:40000 -p 50000:50000 --rm $(docker build -q --target debug .)
-```
-
-Please note, the tests **start** the cmd, so until you connect to port 40000 with your debugger and walk the tests
-through to the point of running cmd, you will not be able to attach a debugger on port 50000 to the cmd.
+1. `git clone git@github.com:networkservicemesh/cmd-dashboard-ui.git`
+2. `cd cmd-dashboard-ui`
+3. `nvm install` ([Node.js](https://nodejs.org/en) version specified in the .nvmrc file will be installed)
+4. `npm install`
+5. `npm run dev`
+6. Open `http://localhost:3000` in the browser
+7. The demo data from `cmd-dashboard-ui/src/model.ts` can be used for debugging

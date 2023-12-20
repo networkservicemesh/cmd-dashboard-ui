@@ -1,0 +1,8 @@
+node_modules
+.DS_Store
+LICENSE
+nohup.out
+package-lock.json
+README.md
+SECURITY.md
+.license

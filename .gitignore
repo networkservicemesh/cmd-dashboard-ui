@@ -16,3 +16,8 @@
 
 .idea/
 junit/
+node_modules
+build
+nohup.out
+.DS_Store
+.vscode
