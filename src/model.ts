@@ -57,7 +57,8 @@ export const InterfaceSize = "10"
 export enum InterfaceShape {
   MEMIF = "ellipse",
   TAP = "round-rectangle",
-  WIREGUARDG = "round-triangle"
+  WIREGUARDG = "round-triangle",
+  TUN = "round-diamond"
 }
 
 export enum EdgeLineType {

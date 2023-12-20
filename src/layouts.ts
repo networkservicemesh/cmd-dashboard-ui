@@ -45,7 +45,7 @@ export const layouts: Record<string, any> = {
     name: "dagre",
     animate: false,
     rankDir: "LR",
-    rankSep: 60,
+    rankSep: 70,
     fit: true
   }
 };

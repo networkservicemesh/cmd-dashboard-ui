@@ -41,18 +41,24 @@ function getDataplaneStylesheet() {
       selector: `node[type = '${NodeType.Interface}']`,
       style: {
         width: InterfaceSize,
-        height: InterfaceSize
+        height: InterfaceSize,
+        "font-size": "8px",
+        'text-background-color': Color.Gray,
+        'text-background-opacity': 1,
+        "text-background-shape": "roundrectangle",
+        'text-border-color': Color.Gray,
+        "text-border-width": "0.2em",
+        "text-border-opacity": 1
       }
     },
     {
       selector: `node[type = '${NodeType.Interface}'][label]`,
       style: {
         shape: (node: { data: (arg0: string) => string | string[] }) =>
-          node.data("label").includes("memif")
-            ? InterfaceShape.MEMIF
-            : node.data("label").includes("wg")
-            ? InterfaceShape.WIREGUARDG
-            : InterfaceShape.TAP
+          node.data("label").includes("memif") ? InterfaceShape.MEMIF :
+          node.data("label").includes("wg") ? InterfaceShape.WIREGUARDG :
+          node.data("label").includes("tun") ? InterfaceShape.TUN :
+          InterfaceShape.TAP
       }
     },
     {
