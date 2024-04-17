@@ -1,7 +1,11 @@
 import * as React from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { switchDisplayPanelOption } from '../store/actions';
+import { AppDispatch, RootState } from '../store/store';
 import { Stylesheet } from "cytoscape";
 import cloneDeep from 'lodash/cloneDeep';
 import CytoscapeCanvas from "./CytoscapeCanvas";
+import TopDisplayPanel from "../floatPanels/TopDisplayPanel";
 import {
   NodeType,
   InterfaceSize,
@@ -13,7 +17,10 @@ import {
   AllowedNodeTypes,
   AllowedEdgeTypes,
   Node,
-  Edge
+  Edge,
+  Page,
+  Option,
+  DisplayPanelOptionEnv
 } from "../model";
 
 interface DataplaneProps {
@@ -39,6 +46,20 @@ function getDataplaneStylesheet() {
     },
     {
       selector: `node[type = '${NodeType.Interface}']`,
+      style: {
+        width: InterfaceSize,
+        height: InterfaceSize,
+        "font-size": "8px",
+        'text-background-color': Color.Gray,
+        'text-background-opacity': 1,
+        "text-background-shape": "roundrectangle",
+        'text-border-color': Color.Gray,
+        "text-border-width": "0.2em",
+        "text-border-opacity": 1
+      }
+    },
+    {
+      selector: `node[type = '${NodeType.LCInterface}']`,
       style: {
         width: InterfaceSize,
         height: InterfaceSize,
@@ -95,24 +116,51 @@ function getDataplaneStylesheet() {
         "line-color": (edge: { data: (arg0: string) => boolean }) =>
           edge.data("healthy") === false ? Color.Red : Color.Green
       }
+    },
+    {
+      selector: `edge[type = '${EdgeType.InterfaceLoopedConnection}']`,
+      style: {
+        "line-color": Color.Gray
+      }
     }
   ];
 }
 
 export default function Dataplane({ nodes, edges }: DataplaneProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const showLoopedConnections = useSelector((state: RootState) => state.app.pages.dataplane.topDisplayPanelOptions.showLoopedConnections);
+
+  const displayPanelOptions: DisplayPanelOptionEnv[] = [
+    {
+      label: 'Looped Connections',
+      onClick: () => dispatch(switchDisplayPanelOption({
+        page: Page.Dataplane,
+        option: Option.ShowLoopedConnections
+      })),
+      checked: showLoopedConnections,
+    },
+  ];
+
   const [stylesheet] = React.useState<Stylesheet[]>(getDataplaneStylesheet() as Stylesheet[]);
   const dataplaneNodes = nodes
       .filter(n => AllowedNodeTypes.Dataplane.includes(n.data.type))
+      .filter(n => showLoopedConnections ? n : n.data.type !== NodeType.LCInterface)
       .map(n => ({ ...n, data: cloneDeep(n.data) }));
   const dataplaneEdges = edges
       .filter(e => AllowedEdgeTypes.Dataplane.includes(e.data.type))
+      .filter(e => showLoopedConnections ? e : e.data.type !== EdgeType.InterfaceLoopedConnection)
       .map(e => ({ ...e, data: cloneDeep(e.data) }));
 
   return (
-    <CytoscapeCanvas
-      nodes={dataplaneNodes}
-      edges={dataplaneEdges}
-      stylesheet={stylesheet}
-    />
+    <>
+      <CytoscapeCanvas
+        nodes={dataplaneNodes}
+        edges={dataplaneEdges}
+        stylesheet={stylesheet}
+      />
+      <TopDisplayPanel
+        options={displayPanelOptions}
+      />
+    </>
   );
 }
