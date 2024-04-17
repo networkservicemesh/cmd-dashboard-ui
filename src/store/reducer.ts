@@ -1,5 +1,10 @@
-import { SET_NODES, SET_EDGES, SET_SELECTED_MENU_ITEM } from './types';
-import { Node, Edge } from "../model";
+import {
+    SET_NODES,
+    SET_EDGES,
+    SET_SELECTED_MENU_ITEM,
+    SWITCH_DISPLAY_PANEL_OPTION
+} from './types';
+import { Node, Edge, Page, Option } from "../model";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const initialState: { nodes: Node[]; edges: Edge[]; app: any } = {
@@ -7,6 +12,13 @@ const initialState: { nodes: Node[]; edges: Edge[]; app: any } = {
     edges: [],
     app: {
         selectedMenuItem: 2,
+        pages: {
+            [Page.Dataplane]: {
+                topDisplayPanelOptions: {
+                    [Option.ShowLoopedConnections]: false
+                }
+            }
+        }
     }
 };
 
@@ -18,7 +30,24 @@ const rootReducer = (state = initialState, action: any) => {
         case SET_EDGES:
             return { ...state, edges: action.payload };
         case SET_SELECTED_MENU_ITEM:
-            return { ...state, app: { selectedMenuItem: action.payload} };
+            return { ...state, app: { ...state.app, selectedMenuItem: action.payload} };
+        case SWITCH_DISPLAY_PANEL_OPTION:
+            return {
+                ...state,
+                app: {
+                    ...state.app,
+                    pages: {
+                        ...state.app.pages,
+                        [action.payload.page]: {
+                            ...state.app.pages[action.payload.page],
+                            topDisplayPanelOptions: {
+                                ...state.app.pages[action.payload.page].topDisplayPanelOptions,
+                                [action.payload.option]: !state.app.pages[action.payload.page].topDisplayPanelOptions[action.payload.option]
+                            }
+                        }
+                    }
+                }
+            };
         default:
             return state;
     }

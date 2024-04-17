@@ -1,3 +1,9 @@
+:root {
+  --theme-color: #202020;
+  --theme-text-color: white;
+  --floating-panel-background-color: #D9D9D9;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -5,7 +11,7 @@ body {
 }
 
 .header {
-  background-color: #202020;
+  background-color: var(--theme-color);
   height: 39px;
   display: flex;
   justify-content: center;
@@ -19,12 +25,12 @@ body {
 }
 
 .header-title {
-  color: white;
+  color: var(--theme-text-color);
   font-size: 16px;
 }
 
 .footer {
-  background-color: #202020;
+  background-color: var(--theme-color);
   height: 16px;
   display: flex;
   justify-content: center;
@@ -33,15 +39,41 @@ body {
 }
 
 .footer-text {
-  color: white;
+  color: var(--theme-text-color);
   font-size: 9px;
 }
 
 .left-panel {
-  background-color: #202020;
+  background-color: var(--theme-color);
   width: 200px;
   height: calc(100vh - 55px);
   padding-left: 10px;
+}
+
+.top-display-panel {
+  position: fixed;
+  left: 220px;
+  top: 49px;
+  font-size: 14px;
+  background-color: var(--floating-panel-background-color);
+  padding: 5px;
+  border-radius: 5px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.top-display-options-panel {
+  position: fixed;
+  left: 220px;
+  top: 79px;
+  padding: 10px;
+  background-color: var(--floating-panel-background-color);
+  user-select: none;
+}
+
+.top-display-options-panel-item {
+  cursor: pointer;
+  margin-bottom: 5px;
 }
 
 .menu {
@@ -51,7 +83,7 @@ body {
 }
 
 .menu-item {
-  color: white;
+  color: var(--theme-text-color);
   font-size: 16px;
   cursor: pointer;
   padding: 5px 0;

@@ -23,6 +23,7 @@ export type Edge = {
 export enum NodeType {
   Cluster = "cluster",
   Interface = "interface",
+  LCInterface = "loopConIfNT",
   Client = "client",
   Forwarder = "forwarder",
   Manager = "manager",
@@ -34,19 +35,20 @@ export enum NodeType {
 export enum EdgeType {
   InterfaceConnection = "interfaceConnection",
   InterfaceCrossConnection = "interfaceCrossConnection",
+  InterfaceLoopedConnection = "interfaceLoopedConnection",
   ServiceRequest = "serviceRequest",
   RegistryRequest = "registryRequest"
 }
 
 export const AllowedNodeTypes = {
-  Dataplane: [NodeType.Cluster, NodeType.Interface, NodeType.Forwarder, NodeType.Client, NodeType.Endpoint],
+  Dataplane: [NodeType.Cluster, NodeType.Interface, NodeType.LCInterface, NodeType.Forwarder, NodeType.Client, NodeType.Endpoint],
   NetworkServices: [NodeType.Client, NodeType.Service],
   NetworkServiceRequests: [NodeType.Forwarder, NodeType.Client, NodeType.Endpoint, NodeType.Manager],
   RegistryRequests: [NodeType.Endpoint, NodeType.Forwarder, NodeType.Manager, NodeType.Registry],
 }
 
 export const AllowedEdgeTypes = {
-  Dataplane: [EdgeType.InterfaceConnection, EdgeType.InterfaceCrossConnection],
+  Dataplane: [EdgeType.InterfaceConnection, EdgeType.InterfaceCrossConnection, EdgeType.InterfaceLoopedConnection],
   NetworkServices: [EdgeType.ServiceRequest],
   NetworkServiceRequests: [EdgeType.ServiceRequest],
   RegistryRequests: [EdgeType.RegistryRequest],
@@ -79,4 +81,23 @@ export enum LineStyle {
   Solid = "solid",
   Dashed = "dashed",
   Dotted = "dotted"
+}
+
+export enum Page {
+  Dataplane = "dataplane"
+}
+
+export enum Option {
+  ShowLoopedConnections = "showLoopedConnections"
+}
+
+export type DisplayPanelOption = {
+  page: Page,
+  option: Option
+}
+
+export type DisplayPanelOptionEnv = {
+  label: string,
+  onClick: () => void,
+  checked: boolean,
 }
